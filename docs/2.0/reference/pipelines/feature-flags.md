@@ -143,12 +143,12 @@ opentofu = "1.6.2"
 </li>
 </ul>
 
-#### `PIPELINES_FEATURE_EXPERIMENT_VALIDATE_DAG_ON_DELETE`
+#### `PIPELINES_FEATURE_VALIDATE_DAG_ON_DELETE`
 <ul>
 <li>
-Validates the Terragrunt DAG when files are deleted in a pull/merge request. Pipelines inspects the DAG that would result from merging the change and cross-references the deleted files against every active unit's `dependencies` and `reading` ([`mark_as_read`](https://docs.terragrunt.com/reference/hcl/functions/#mark_as_read)) entries. If a remaining unit still depends on a deleted file or unit directory, Pipelines prevents the plan from running, surfacing the broken reference instead of letting it appear as a confusing error during `terragrunt plan/apply`.
+Validates the [Terragrunt DAG](https://docs.terragrunt.com/getting-started/terminology#directed-acyclic-graph-dag) when files are deleted in a pull/merge request. Pipelines inspects the DAG that would result from merging the change and cross-references the deleted files against every active unit's `dependencies` and `reading` (files marked with [`mark_as_read`](https://docs.terragrunt.com/reference/hcl/functions/#mark_as_read)) entries. If a remaining unit still depends on a deleted file or unit directory, Pipelines prevents the plan from running, surfacing the broken reference instead of letting it appear as a confusing error during `terragrunt plan/apply`.
 
-This check only runs on pull/merge requests.
+This check only blocks the run on pull/merge requests. On other events violations are logged as warnings.
 
 Requires Terragrunt newer than `v0.91.3` to validate `mark_as_read` entries. On older versions only `dependencies` are checked.
 </li>
